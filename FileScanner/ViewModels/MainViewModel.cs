@@ -109,11 +109,20 @@ namespace FileScanner.ViewModels
         public List<string> GetFolderAsync(string dir)
         {
             var Folders = new List<string>();
-
-            foreach (var items in Directory.EnumerateDirectories(dir, "*"))
+            try 
             {
-                Folders.Add(items);
+                foreach (var items in Directory.EnumerateDirectories(dir, "*"))
+                {
+                    Folders.Add(items);
+                }
             }
+            catch(UnauthorizedAccessException)
+            {
+                System.Windows.MessageBox.Show("Pas la permission par le chemein " + dir);
+                Folders = null;
+            }
+
+           
             return Folders;
         }
         public List<string> GetFileAsync(string dir)
